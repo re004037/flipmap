@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<title>Hello...</title>
+<style type="text/css">
+.map-embed
+{
+	max-width: 100% ;
+	height: 0 ;
+	margin: 0 ;
+	padding: 0 0 56.25% ;
+
+	overflow: hidden ;
+
+	position: relative ;
+	top: 0 ;
+	left: 0 ;
+}
+
+.map-embed > div
+{
+	position: absolute ;
+	top: 0 ;
+	left: 0 ;
+
+	width: 100% ;
+	height: 100% ;
+
+	margin: 0 ;
+	padding: 0 ;
+}
+
+.map-embed img
+{
+	max-width: none ;
+}
+</style>
+</head>
+
+<body>
+
+<div class="ggmap">
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7297583436402!2d139.7012789503819!3d35.65902923870037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b5850e5a83f%3A0x70297507b32efce5!2z5riL6LC344OS44Kr44Oq44Ko!5e0!3m2!1sja!2sus!4v1482394186273" 
+	width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+</div>
+
+
+<!-- 地図のキャンパス -->
+<div class="map-embed">
+	<div id="map-canvas">ここに地図が表示されます</div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZj8gynMNgPXXjB6jZbJkFbaju_L94mY4">
+// キャンパスの要素を取得する
+var canvas = document.getElementById( 'map-canvas' ) ;
+
+// 中心の位置座標を指定する
+var latlng = new google.maps.LatLng( 35.792621 , 139.806513 );
+
+// 地図のオプションを設定する
+var mapOptions = {
+	zoom: 15 ,				// ズーム値
+	center: latlng ,		// 中心座標 [latlng]
+};
+
+// [canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
+var map = new google.maps.Map( canvas , mapOptions ) ;
+
+
+// マーカーのインスタンスを格納する配列
+var markers = [] ;
+
+// 1つ目のマーカーのインスタンスを作成する
+// [ new google.maps.Marker() ]の引数にオプションオブジェクトを指定する
+markers[0] = new google.maps.Marker( {
+	map: map ,
+	position: new google.maps.LatLng( 35.710063 , 139.8107 ) ,
+} ) ;
+</script>
+</body>
+</html>
