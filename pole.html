@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+<script type="text/javascript" src="./aframe-v0.4.0.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+</head>
+
+<body onload="init()">
+
+<a-scene antialias="true">
+  <a-entity position="0 0 0" scale="0.7 0.7 0.7" rotation="0 0 0" id="pole_base">
+    <a-box src="./pole.jpg" position="0 2.25 0" scale="1.25 0.05 0.05" color="#999999"></a-box>
+    <a-box src="./pole.jpg" position="0.2 2.1 0" rotation="0 0 45" scale="0.5 0.01 0.01" color="#333333"></a-box>
+    <a-box src="./pole.jpg" position="-0.2 2.1 0" rotation="0 0 -45" scale="0.5 0.01 0.01" color="#333333"></a-box>
+    <a-cylinder src="./pole.jpg" repeat="2 1" position="0 0 0" radius="0.075" height="5"></a-cylinder>
+  </a-entity>
+  <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#888888"></a-plane>
+  <a-sky color="#ECECEC"></a-sky>
+  <a-entity position="0 -0.5 1.8" rotation="-10 0 0">
+    <a-camera></a-camera>
+  </a-entity>
+</a-scene>
+</body>
+<script type="text/javascript">
+function init() {
+  var myDataRef = new Firebase('https://flipcastdemo.firebaseio.com/');
+  window.setInterval(function() {
+  myDataRef.endAt().limit(1).on('child_added', function(snapshot) {
+    var message = snapshot.val();
+    var z = parseInt(message);
+    var rate = 90 - (9 * z);
+    if (rate > 72) {
+      rate = 72;
+    }
+    $('#pole_base').attr('rotation', "-"+rate+" 0 "+rate);      
+  });
+  }, 100);
+}
+  
+</script>
+</html>

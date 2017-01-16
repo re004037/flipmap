@@ -1,0 +1,80 @@
+<html>
+<head>
+<!-- Latest compiled and minified CSS -->
+
+<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="./meter.js"></script>
+<script src="./gauge.js"></script>
+</head>
+<body onload="init2()">
+<div class="row">
+<div class="col-md-6" id="meter">
+  <canvas id="meter_canvas"></canvas>
+</div>
+<div class="col-md-6">
+  <iframe frameborder="0" src="./pole.html" width="100%" height="250"></iframe>
+</div>
+<!-- 地図のキャンパス -->
+<div class="col-md-12" class="ggmap">
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7297583436402!2d139.7012789503819!3d35.65902923870037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b5850e5a83f%3A0x70297507b32efce5!2z5riL6LC344OS44Kr44Oq44Ko!5e0!3m2!1sja!2sus!4v1482394186273" 
+	width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+</div>
+</div>
+
+<script>
+/*
+    var _id = 'meter';
+    var size = 180;
+    var percent = 50;
+    var imageSrc = "./tachometer.jpg"
+    //https://www.dropbox.com/s/0o3qka5gh2fg5hq/Geesugitan_face.png?dl=1';
+    setMeter(_id,size,imageSrc,percent);
+    */
+    function init2() {
+    var opts = {
+  lines: 12, // The number of lines to draw
+  angle: 0.35, // The span of the gauge arc
+  lineWidth: 0.1, // The line thickness
+  pointer: {
+    length: 1, // The radius of the inner circle
+    strokeWidth: 0.031, // The thickness
+    color: '#000000' // Fill color
+  },
+  staticZones: [
+   {strokeStyle: "#30B32D", min: 0,   max: 18}, // Green
+   {strokeStyle: "#FFDD00", min: 18, max: 36}, // Yellow
+   {strokeStyle: "#F03E3E", min: 36, max: 72}  // Red
+],
+  limitMax: false,     // If true, the pointer will not go past the end of the gauge
+  colorStart: '#6F6EA0',   // Colors
+  colorStop: '#C0C0DB',    // just experiment with them
+  strokeColor: '#EEEEEE',  // to see which ones work best for you
+  generateGradient: true,
+  highDpiSupport: true     // High resolution support
+  };
+  var target = document.getElementById('meter_canvas'); // your canvas element
+  var gauge = new Donut(target).setOptions(opts); // create sexy gauge!
+  gauge.maxValue = 72; // set max gauge value
+  gauge.animationSpeed = 8; // set animation speed (32 is default value)
+  gauge.set(0); // set actual value
+  
+  var myDataRef = new Firebase('https://flipcastdemo.firebaseio.com/');
+  window.setInterval(function() {
+  myDataRef.endAt().limit(1).on('child_added', function(snapshot) {
+    var message = snapshot.val();
+    var z = parseInt(message);
+    var rate = 90 - (9 * z);
+    if (rate > 72) {
+      rate = 72;
+    }
+    gauge.set(rate);
+  });
+  }, 100);
+}
+
+
+</script>
+
+</body>
+</html>
